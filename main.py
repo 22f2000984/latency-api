@@ -2,6 +2,7 @@ import json
 import statistics
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI()
 
@@ -12,8 +13,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-with open("q-vercel-latency.json") as f:
-    DATA = json.load(f)
+# with open("q-vercel-latency.json") as f:
+#     DATA = json.load(f)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "q-vercel-latency.json")
+
+with open(DATA_PATH, "r", encoding="utf-8") as f:
+    telemetry = json.load(f)
 
 
 @app.post("/")
